@@ -1,0 +1,28 @@
+Puerto en el que correrá tu API de Spring Boot
+server.port=8080
+
+--- CONFIGURACIÓN DE LA BASE DE DATOS MYSQL ---
+La URL de conexión. Asegúrate de que el nombre 'matchpet_db' sea el nombre
+de la base de datos que creaste en MySQL.
+spring.datasource.url=jdbc:mysql://localhost:3306/matchpet_db
+
+El usuario de tu base de datos MySQL (a menudo 'root' por defecto)
+spring.datasource.username=root
+
+¡NUNCA SUBAS TU CONTRASEÑA REAL A GIT!
+Introduce aquí tu contraseña local de MySQL.
+spring.datasource.password=
+
+--- CONFIGURACIÓN DE JPA / HIBERNATE ---
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+
+--- CONFIGURACIÓN DE JWT ---
+Esta es tu clave secreta. ¡DEBE SER SECRETA Y NO SUBIRSE A GIT!
+Puedes generar una nueva en https://www.google.com/search?q=https://www.allkeysgenerator.com/Random/Security-Encryption-Key-Generator.aspx (elige 256-bit)
+application.security.jwt.secret-key=
+
+Tiempo de expiración del token en milisegundos.
+86400000 ms = 24 horas
+application.security.jwt.expiration=86400000
