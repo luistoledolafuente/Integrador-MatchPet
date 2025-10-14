@@ -1,0 +1,12 @@
+db_data/*
+!db_data/init.sql
+!db_data/.gitkeep
+
+Archivos de React/Node
+/frontend-web-user/node_modules
+/frontend-web-user/dist
+/frontend-web-admin/node_modules
+/frontend-web-admin/dist
+
+Logs de depuración (si existen)
+*.log
