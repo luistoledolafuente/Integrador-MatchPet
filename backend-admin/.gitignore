@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.$py.class
+
+# Entorno Virtual
+venv/
+env/
+.venv/
+
+# Base de Datos
+*.sqlite3
+
+# Django / Media
+/media
+/static
+
+# Archivos de configuración y claves sensibles
+*.env
+.vscode/
+.idea/
+*.log
+local_settings.py
+db.sqlite3
+
+# Clave Secreta (¡CRUCIAL!)
+config/settings/local.py
+config/settings.py  
+
+# Tokens de autenticación y otros archivos temporales
+jwt_secret
