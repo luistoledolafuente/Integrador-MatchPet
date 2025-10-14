@@ -1,0 +1,43 @@
+version: "3.8"
+
+services:
+  # 1. Database Service (MariaDB)
+  db:
+    image: mariadb:10.5
+    container_name: integrador_matchpet-db-1
+    environment:
+      MYSQL_ROOT_PASSWORD: matchpet_root_password
+      MYSQL_DATABASE: matchpet_db
+      MYSQL_USER: matchpet_user
+      MYSQL_PASSWORD: matchpet_user_password
+    volumes:
+      - ./db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  # 2. Backend Service (Django)
+  backend_admin:
+    build:
+      context: ./backend-admin       # carpeta donde está el Dockerfile
+      dockerfile: Dockerfile         # nombre del Dockerfile
+    container_name: integrador_matchpet-backend_admin-1
+    # Espera 10 segundos antes de ejecutar Django
+    command: >
+      sh -c "sleep 10 &&
+             python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend-admin:/usr/src/app
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DJANGO_DB_NAME: matchpet_db
+      DJANGO_DB_USER: matchpet_user
+      DJANGO_DB_PASSWORD: matchpet_user_password
+      DJANGO_DB_HOST: db
+      DJANGO_DB_PORT: 3306
+
+volumes:
+  db_data:
