@@ -23,48 +23,36 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    // Inyectamos el repositorio para poder buscar usuarios.
     @Autowired
     private AdoptanteRepository adoptanteRepository;
 
-    /**
-     * Define la cadena de filtros de seguridad que se aplicará a todas las peticiones HTTP.
-     * @param http El objeto HttpSecurity para configurar la seguridad.
-     * @param jwtAuthFilter El filtro JWT que se inyecta como parámetro para romper la referencia circular.
-     * @return La cadena de filtros de seguridad construida.
-     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthFilter) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Permite el acceso sin autenticación a los endpoints de registro y login.
+                        // Endpoints públicos de autenticación
                         .requestMatchers("/api/auth/**").permitAll()
-                        // Requiere autenticación para cualquier otra petición.
+
+                        // ¡NUEVAS LÍNEAS! Endpoints para la documentación de Swagger
+                        .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+
+                        // El resto de peticiones deben estar autenticadas
                         .anyRequest().authenticated()
                 )
-                // Le decimos a Spring que use nuestro AuthenticationProvider personalizado.
                 .authenticationProvider(authenticationProvider())
-                // ¡LA PIEZA CLAVE!
-                // Añade nuestro filtro de JWT antes del filtro de autenticación estándar de Spring.
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    /**
-     * Expone el gestor de autenticación de Spring para que podamos usarlo en nuestro AuthService.
-     */
+    // ... (El resto de la clase no cambia)
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
         return config.getAuthenticationManager();
     }
 
-    /**
-     * Define el proveedor de autenticación. Une el UserDetailsService (cómo encontrar usuarios)
-     * con el PasswordEncoder (cómo verificar contraseñas).
-     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -73,22 +61,14 @@ public class SecurityConfig {
         return authProvider;
     }
 
-    /**
-     * Define cómo Spring Security debe cargar los detalles de un usuario.
-     * En nuestro caso, a través del email desde el repositorio de Adoptantes.
-     */
     @Bean
     public UserDetailsService userDetailsService() {
         return username -> adoptanteRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado con email: " + username));
     }
 
-    /**
-     * Define el bean para encriptar y verificar contraseñas.
-     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
-
