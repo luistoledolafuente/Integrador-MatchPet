@@ -1,0 +1,103 @@
+version: "3.8"
+
+services:
+  # 1. BASE DE DATOS COMPARTIDA (MariaDB)
+  # Centraliza todos los datos de MatchPet.
+  db:
+    image: mariadb:10.5
+    container_name: matchpet_db_service
+    restart: always
+    environment:
+      # Credenciales unificadas (usadas por ambos backends)
+      MYSQL_ROOT_PASSWORD: matchpet_root_password
+      MYSQL_DATABASE: matchpet_db
+      MYSQL_USER: matchpet_user
+      MYSQL_PASSWORD: matchpet_user_password
+    volumes:
+      # Monta la carpeta db_data donde debe estar tu init.sql
+      - ./db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. BACKEND ADMINISTRACIÓN (DJANGO) - Puerto 8000
+  backend_admin:
+    build:
+      context: ./backend-admin
+      dockerfile: Dockerfile
+    container_name: matchpet_backend_admin
+    restart: always
+    # Ejecuta migraciones y luego el servidor
+    command: >
+      sh -c "sleep 10 && 
+             python manage.py migrate && 
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./backend-admin:/usr/src/app
+    ports:
+      - "8000:8000" # API de Administración
+    depends_on:
+      db:
+        condition: service_healthy 
+    environment:
+      # Conexión interna: usa 'db' como host
+      DJANGO_DB_NAME: matchpet_db
+      DJANGO_DB_USER: matchpet_user
+      DJANGO_DB_PASSWORD: matchpet_user_password
+      DJANGO_DB_HOST: db 
+      DJANGO_DB_PORT: 3306
+
+  # 3. BACKEND USUARIO (SPRING BOOT) - Puerto 8080
+  backend_user:
+    build:
+      context: ./backend-user 
+    container_name: matchpet_backend_user
+    restart: always
+    depends_on:
+      db:
+        condition: service_healthy 
+    ports:
+      - "8080:8080" # API de Usuario
+    environment:
+      # Conexión interna: usa 'db' como host
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/matchpet_db 
+      SPRING_DATASOURCE_USERNAME: matchpet_user 
+      SPRING_DATASOURCE_PASSWORD: matchpet_user_password 
+      
+      # Configuraciones de Spring
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      APPLICATION_SECURITY_JWT_SECRET-KEY: a3c4e6f8a2b1d5e7f9a3c2b1d4e6f8a2b1d5e7f9a3c2b1d4e6f8a2b1d5e7f9a3
+      APPLICATION_SECURITY_JWT_EXPIRATION: 86400000
+
+  # 4. FRONTEND WEB - ADMINISTRACIÓN (React) - Puerto 3000
+  frontend_web_admin:
+    build:
+      context: ./frontend-web-admin
+    container_name: matchpet_frontend_admin
+    ports:
+      - "3000:3000" 
+    depends_on:
+      - backend_admin
+    environment:
+      # La URL que React usará para llamar al backend
+      REACT_APP_ADMIN_API_URL: http://localhost:8000
+      
+  # 5. FRONTEND WEB - USUARIO (React) - Puerto 3001
+  frontend_web_user:
+    build:
+      context: ./frontend-web-user
+    container_name: matchpet_frontend_user
+    ports:
+      - "3001:3000" # Se mapea el puerto 3000 interno al 3001 externo
+    depends_on:
+      - backend_user
+    environment:
+      # La URL que React usará para llamar al backend
+      REACT_APP_USER_API_URL: http://localhost:8080
+
+volumes:
+  db_data:
