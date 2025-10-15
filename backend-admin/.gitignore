@@ -22,12 +22,8 @@ env/
 .vscode/
 .idea/
 *.log
-local_settings.py
 db.sqlite3
 
-# Clave Secreta (¡CRUCIAL!)
-config/settings/local.py
-config/settings.py  
 
 # Tokens de autenticación y otros archivos temporales
 jwt_secret

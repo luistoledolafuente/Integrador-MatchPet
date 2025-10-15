@@ -1,0 +1,54 @@
+services:
+  # 1. Database Service (MariaDB)
+  db:
+    image: mariadb:10.5
+    container_name: integrador_matchpet-db-1
+    environment:
+      # Variables de acceso a la base de datos
+      MYSQL_ROOT_PASSWORD: matchpet_root_password
+      MYSQL_DATABASE: matchpet_db
+      MYSQL_USER: matchpet_user
+      MYSQL_PASSWORD: matchpet_user_password
+    volumes:
+      # Persistencia de datos
+      - db_data:/var/lib/mysql
+    ports:
+      # Exposición al host (tu máquina)
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mariadb-admin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # 2. Backend Service (Django Admin)
+  backend_admin:
+    build:
+      # ¡IMPORTANTE! El contexto ahora es el directorio actual (donde está el Dockerfile)
+      context: .
+      dockerfile: Dockerfile
+    container_name: integrador_matchpet-backend_admin-1
+    # Espera que la DB esté saludable antes de iniciar la migración y el servidor
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      # ¡CORREGIDO! Monta el directorio de código actual en el contenedor
+      - .:/usr/src/app
+    ports:
+      # Acceso al servidor Django
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy # Espera a que la DB pase el healthcheck
+    environment:
+      # Configuración de Django para conectarse a la DB
+      DJANGO_DB_NAME: matchpet_db
+      DJANGO_DB_USER: matchpet_user
+      DJANGO_DB_PASSWORD: matchpet_user_password
+      DJANGO_DB_HOST: db            # 'db' es el nombre del servicio de la DB
+      DJANGO_DB_PORT: 3306
+
+volumes:
+  # Definición del volumen para persistir los datos de la base de datos
+  db_data:
