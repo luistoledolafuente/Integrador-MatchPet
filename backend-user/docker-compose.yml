@@ -1,50 +1,42 @@
+version: "3.8"
+
 services:
-  # Servicio para la base de datos MySQL
   db:
-    image: mysql:8.0
-    container_name: matchpet-db
+    image: mariadb:10.5
+    container_name: matchpet_db_service
+    restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: Lmtlf1620*
+      MYSQL_ROOT_PASSWORD: matchpet_root_password
       MYSQL_DATABASE: matchpet_db
-    ports:
-      - "3307:3306" 
+      MYSQL_USER: matchpet_user
+      MYSQL_PASSWORD: matchpet_user_password
     volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - matchpet-net
-    # Esto le dice a Docker cómo comprobar si MySQL está realmente listo.
+      - ./db_data:/var/lib/mysql
+    ports:
+      - "3307:3306"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       interval: 10s
       timeout: 5s
       retries: 5
 
-  # Servicio para tu aplicación Spring Boot
-  app:
-    build: .
-    container_name: matchpet-backend
-    # Ahora 'depends_on' esperará a que el servicio 'db' esté "healthy" (saludable).
+  backend_user:
+    build:
+      context: .
+    container_name: matchpet_backend_user
+    restart: always
     depends_on:
       db:
-        condition: service_healthy
+        condition: service_healthy 
     ports:
-      - "8080:8080"
+      - "8081:8080" # API de Usuario
     environment:
-      # Variables de entorno para la base de datos
-      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/matchpet_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: Lmtlf1620*
-      # ¡LÍNEA CLAVE PARA FORZAR LA CREACIÓN DE TABLAS!
-      # Esto asegura que Hibernate cree las tablas al arrancar.
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/matchpet_db 
+      SPRING_DATASOURCE_USERNAME: matchpet_user 
+      SPRING_DATASOURCE_PASSWORD: matchpet_user_password 
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      # Variables de entorno para JWT
-      APPLICATION_SECURITY_JWT_SECRET-KEY: a3c4e6f8a2b1d5e7f9a3c2b1d4e6f8a2b1d5e7f9a3c2b1d4e6f8a2b1d5e7f9a3
+      APPLICATION_SECURITY_JWT_SECRET_KEY: a3c4e6f8a2b1d5e7f9a3c2b1d4e6f8a2b1d5e7f9a3c2b1d4e6f8a2b1d5e7f9a3
       APPLICATION_SECURITY_JWT_EXPIRATION: 86400000
-    networks:
-      - matchpet-net
 
 volumes:
-  mysql_data:
-
-networks:
-  matchpet-net:
+  db_data:
