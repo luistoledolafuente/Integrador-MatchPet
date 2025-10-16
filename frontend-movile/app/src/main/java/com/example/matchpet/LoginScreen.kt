@@ -105,7 +105,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(32.dp))
 
-                // Email
+                // correo electronico
                 Text(
                     text = "Correo electrónico",
                     fontSize = 14.sp,
@@ -137,7 +137,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                // Contraseña
+                //Contraseña
                 Text(
                     text = "Contraseña",
                     fontSize = 14.sp,
@@ -179,7 +179,7 @@ fun LoginScreen(
 
                 Spacer(modifier = Modifier.height(12.dp))
 
-                // Olvidaste tu contraseña
+                //Olvidaste tu contraseña
                 TextButton(
                     onClick = { /* Acción recuperar contraseña */ },
                     modifier = Modifier.align(Alignment.End)
