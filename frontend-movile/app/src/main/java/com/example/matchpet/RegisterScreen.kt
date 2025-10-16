@@ -14,6 +14,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -40,6 +41,9 @@ fun RegisterScreen(
     val darkBlue = Color(0xFF2C5F6F)
     val lightBlue = Color(0xFF8DD5E7)
     val lightPink = Color(0xFFFFF0F0)
+
+    val context = LocalContext.current
+    val userCache = remember { UserCache(context) }
 
     Column(
         modifier = Modifier
@@ -287,6 +291,15 @@ fun RegisterScreen(
                         val passwordsMatch = password == confirmPassword
 
                         if (allFieldsFilled && passwordsMatch) {
+                            // <<--- LÓGICA DE GUARDADO AÑADIDA AQUÍ
+                            // Guardamos los datos del usuario usando nuestra clase UserCache
+                            userCache.saveUser(
+                                nombre = nombre,
+                                apellido = apellido,
+                                email = email
+                            )
+
+                            // Navegamos a la siguiente pantalla
                             onSuccessClick()
                         }
                     },
