@@ -109,7 +109,7 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                // Campos del formulario
+                // Campos para el formulario
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(12.dp)
@@ -189,7 +189,7 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Contraseña
+                //Contraseña
                 Text(
                     text = "Contraseña",
                     fontSize = 14.sp,
@@ -312,7 +312,7 @@ fun RegisterScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Términos y condiciones
+                // Términos
                 Text(
                     text = "Al registrarte, aceptas nuestros Términos de Servicio y Política de Privacidad.",
                     fontSize = 11.sp,
