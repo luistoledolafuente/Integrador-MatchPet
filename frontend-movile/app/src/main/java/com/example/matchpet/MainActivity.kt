@@ -14,7 +14,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,15 +32,52 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             MatchPetTheme {
-                HomeScreen()
+                MatchPetApp()
             }
         }
     }
 }
 
+@Composable
+fun MatchPetApp() {
+    var currentScreen by remember { mutableStateOf("home") }
+
+    when (currentScreen) {
+        "home" -> HomeScreen(
+            onAdoptarClick = {
+                currentScreen = "register"
+            }
+        )
+        "register" -> RegisterScreen(
+            onBackClick = {
+                currentScreen = "home"
+            },
+            onLoginClick = {
+                currentScreen = "login"
+            },
+            onSuccessClick = {
+                currentScreen = "success"
+            }
+        )
+        "login" -> LoginScreen(
+            onRegisterClick = {
+                currentScreen = "register"
+            },
+            onBackClick = {
+                currentScreen = "home"
+            }
+        )
+        "success" -> SuccessScreen(
+            onContinueClick = {
+                currentScreen = "home"
+            }
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(onAdoptarClick: () -> Unit = {}) {
     val lightBlue = Color(0xFFB8E6F5)
     val darkBlue = Color(0xFF2C3E50)
     val coral = Color(0xFFFF9B87)
@@ -114,7 +151,7 @@ fun HomeScreen() {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Button(
-                    onClick = { },
+                    onClick = onAdoptarClick,
                     colors = ButtonDefaults.buttonColors(
                         containerColor = darkBlue
                     ),
@@ -271,6 +308,6 @@ fun FeatureCard(
 @Composable
 fun HomeScreenPreview() {
     MatchPetTheme {
-        HomeScreen()
+        HomeScreen(onAdoptarClick = {})
     }
 }
