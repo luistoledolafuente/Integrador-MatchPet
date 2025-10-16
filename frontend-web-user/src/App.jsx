@@ -6,6 +6,7 @@ import RegisterPage from './pages/RegisterPage';
 import HomePage from './pages/HomePage';
 import DashboardHomePage from './pages/DashboardHomePage';
 import MascotasPage from './pages/MascotasPage';
+import UnderConstructionPage from './pages/UnderConstructionPage';
 
 // Importación de Layouts (Plantillas de Diseño)
 import MainLayout from './layouts/MainLayout';
@@ -18,19 +19,21 @@ function App() {
   return (
     <Routes>
       {/* --- Rutas Públicas --- */}
-      {/* Estas rutas usan el MainLayout que tiene Navbar y Footer */}
       <Route element={<MainLayout />}>
         <Route path="/" element={<HomePage />} />
-        {/* Aquí podrías añadir otras páginas públicas como /sobre-nosotros, /contacto, etc. */}
+        <Route path="/sobre-nosotros" element={<UnderConstructionPage />} />
+        <Route path="/contacto" element={<UnderConstructionPage />} />
+        <Route path="/blog" element={<UnderConstructionPage />} />
+        <Route path="/adoptar" element={<UnderConstructionPage />} />
+        <Route path="/donar" element={<UnderConstructionPage />} />
+        <Route path="/refugio" element={<UnderConstructionPage />} />
       </Route>
 
       {/* --- Rutas de Autenticación --- */}
-      {/* Estas rutas son a pantalla completa, por lo que no usan ningún layout */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/registro" element={<RegisterPage />} />
 
       {/* --- Rutas Protegidas del Dashboard --- */}
-      {/* Todas las rutas que empiecen con /dashboard estarán protegidas */}
       <Route 
         path="/dashboard" 
         element={
@@ -39,13 +42,20 @@ function App() {
           </ProtectedRoute>
         }
       >
-        {/* Estas son las sub-rutas que se mostrarán dentro del DashboardLayout */}
         <Route index element={<DashboardHomePage />} />
         <Route path="mascotas" element={<MascotasPage />} />
-        {/* Futuras rutas del dashboard irían aquí, por ejemplo: */}
-        {/* <Route path="favoritos" element={<FavoritosPage />} /> */}
-        {/* <Route path="perfil" element={<PerfilPage />} /> */}
+        <Route path="favoritos" element={<UnderConstructionPage />} />
+        <Route path="perfil" element={<UnderConstructionPage />} />
+        <Route path="mensajes" element={<UnderConstructionPage />} />
+        <Route path="configuracion" element={<UnderConstructionPage />} />
       </Route>
+
+      {/* Ruta para cualquier URL no definida */}
+      <Route path="*" element={
+        <MainLayout>
+          <UnderConstructionPage />
+        </MainLayout>
+      } />
 
     </Routes>
   );
