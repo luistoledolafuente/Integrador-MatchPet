@@ -11,7 +11,7 @@ export default function Footer() {
               <span className="text-xl font-semibold text-[#2F7C8A]">🐾MatchPet</span>
             </div>
             <p className="text-sm text-gray-600 mb-4">
-              Encuentra a tu compañero ideal. Historias, adopciones y comunidad para las mascotas.
+              Encuentra a tu compañero ideal.
             </p>
 
             <div className="flex gap-3">
@@ -31,7 +31,8 @@ export default function Footer() {
 
           {/* Middle: Navegación */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-800 mb-4 tracking-wider">NAVEGACIÓN</h4>
+            <h4 className="text-sm font-semibold text-[#316B7A] mb-4 tracking-wider">NAVEGACIÓN</h4>
+
             <ul className="space-y-3 text-sm text-gray-600">
               <li><a href="#" className="hover:underline">Sobre nosotros</a></li>
               <li><a href="#" className="hover:underline">Blog</a></li>
@@ -41,7 +42,7 @@ export default function Footer() {
 
           {/* Right: Legal */}
           <div>
-            <h4 className="text-sm font-semibold text-gray-800 mb-4 tracking-wider">LEGAL</h4>
+            <h4 className="text-sm font-semibold text-[#316B7A] mb-4 tracking-wider">LEGAL</h4>
             <ul className="space-y-3 text-sm text-gray-600">
               <li><a href="#" className="hover:underline">Política de Privacidad</a></li>
               <li><a href="#" className="hover:underline">Términos de Servicio</a></li>

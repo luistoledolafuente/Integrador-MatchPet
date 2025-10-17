@@ -3,33 +3,33 @@ import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   return (
-    <div className="bg-sky-50">
+    <div className="bg-gradient-to-b from-sky-200 to-[#FFF7E6]">
+
       {/* Hero Section */}
       <div className="container mx-auto px-6 py-16 text-center">
         <div className="max-w-3xl mx-auto">
-          <h1 className="text-5xl font-bold text-gray-800 mb-6">
-            Encuentra a tu compañero ideal
+          <h1 className="text-7xl font-extrabold text-[#316B7A] mb-6">
+            MatchPet
           </h1>
-          <p className="text-xl text-gray-600 mb-12">
-            Nuestra plataforma conecta a compañeros de vida maravillosos con hogares amorosos, 
-            utilizamos tecnología avanzada para hacer cada adopción una experiencia única y especial.
+          <p className="text-l text-gray-600 mb-12">
+            Encuentra a tu compañero ideal. 
           </p>
           <div className="flex justify-center gap-4 mb-12">
             <Link
               to="/dashboard"
-              className="px-8 py-3 bg-teal-700 text-white rounded-md hover:bg-teal-800 transition-colors"
+              className="px-8 py-3 bg-[#316B7A] text-white rounded-xl hover:bg-teal-800 transition-colors"
             >
               Adoptar
             </Link>
             <Link
               to="/donar"
-              className="px-8 py-3 bg-coral-500 text-white rounded-md hover:bg-coral-600 transition-colors"
+              className="px-8 py-3 bg-[#FDB2A0] text-white rounded-xl hover:bg-coral-600 transition-colors"
             >
               Donar
             </Link>
             <Link
               to="/refugio"
-              className="px-8 py-3 bg-white text-teal-700 border border-teal-700 rounded-md hover:bg-teal-50 transition-colors"
+              className="px-8 py-3 font-semibold bg-white text-[#316B7A] border border-[#316B7A] rounded-xl hover:bg-teal-80 transition-colors"
             >
               Soy Refugio
             </Link>
@@ -40,15 +40,15 @@ export default function HomePage() {
       {/* Features Section */}
       <section className="container mx-auto px-6 py-16">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+          <h2 className="text-5xl font-extrabold text-[#316B7A] mb-4">
             ¿Cómo te ayuda MatchPet?
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-l text-gray-600 max-w-2xl mx-auto">
             Descubre cómo nuestra plataforma facilita la adopción y ayuda a conectar mascotas con familias amorosas
           </p>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+        <div className="grid md:grid-cols-3 gap-10 max-w-7xl mx-auto">
           <div className="flex flex-col items-center bg-white p-8 rounded-lg shadow-sm">
             <div className="w-16 h-16 bg-sky-100 rounded-full flex items-center justify-center mb-4">
               <svg className="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -56,7 +56,7 @@ export default function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold mb-2">Adopta con Amor</h3>
-            <p className="text-gray-600 text-center">Encuentra tu compañero perfecto entre nuestras mascotas en adopción</p>
+            <p className="text-gray-600 text-center">Facilitamos el proceso de adopción conectándote con tu futura mascota de una manera simple y amigable.</p>
           </div>
 
           <div className="flex flex-col items-center bg-white p-8 rounded-lg shadow-sm">
@@ -66,7 +66,7 @@ export default function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold mb-2">Recomendaciones con IA</h3>
-            <p className="text-gray-600 text-center">Sistema inteligente que te ayuda a encontrar tu mascota ideal</p>
+            <p className="text-gray-600 text-center">Nuestra inteligencia artificial analiza tu perfil para recomendarte la mascota que mejor se adapte a tu estilo de vida.</p>
           </div>
 
           <div className="flex flex-col items-center bg-white p-8 rounded-lg shadow-sm">
@@ -76,16 +76,14 @@ export default function HomePage() {
               </svg>
             </div>
             <h3 className="text-xl font-semibold mb-2">Apoyo a Refugios</h3>
-            <p className="text-gray-600 text-center">Colaboramos con refugios verificados para garantizar adopciones seguras</p>
+            <p className="text-gray-600 text-center">Cada acción en nuestra plataforma, ya sea adoptando o donando, contribuye directamente al bienestar de los animales en refugios.</p>
           </div>
         </div>
 
         {/* Galería de imágenes */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto mt-16">
-          <img src="/src/assets/images/dog1.webp" alt="Perro feliz" className="rounded-lg object-cover w-full h-48" />
-          <img src="/src/assets/images/cat1.webp" alt="Gato descansando" className="rounded-lg object-cover w-full h-48" />
-          <img src="/src/assets/images/adoption1.webp" alt="Momento de adopción" className="rounded-lg object-cover w-full h-48" />
-          <img src="/src/assets/images/pet2.webp" alt="Mascota jugando" className="rounded-lg object-cover w-full h-48" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-7xl mx-auto mt-16">
+          <img src="/src/assets/images/perro_home.png" alt="Perro feliz" className="rounded-lg object-cover w-full h-90" />
+          <img src="/src/assets/images/gato_home.png" alt="Gato descansando" className="rounded-lg object-cover w-full h-90" />
         </div>
       </section>
     </div>
