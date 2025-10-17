@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   return (
-    <div className="bg-gradient-to-b from-sky-200 to-[#FFF7E6]">
+    <div className="bg-gradient-to-b from-[#BAE6FD] via-[#FFF7E6] to-[#FFF7E6]">
+
 
       {/* Hero Section */}
       <div className="container mx-auto px-6 py-16 text-center">
@@ -79,6 +80,9 @@ export default function HomePage() {
             <p className="text-gray-600 text-center">Cada acción en nuestra plataforma, ya sea adoptando o donando, contribuye directamente al bienestar de los animales en refugios.</p>
           </div>
         </div>
+        <br />
+        <br />
+        <br />
 
         {/* Galería de imágenes */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-7xl mx-auto mt-16">
