@@ -40,10 +40,10 @@ public class DataInitializer implements CommandLineRunner {
             userDePrueba.setFechaCreacionPerfil(LocalDateTime.now());
 
             adoptanteRepository.save(userDePrueba);
-            System.out.println("✅ Usuario de prueba '" + testUserEmail + "' creado exitosamente.");
+            System.out.println("Usuario de prueba '" + testUserEmail + "' creado exitosamente.");
         } else {
             // Si ya existe, simplemente lo informamos.
-            System.out.println("ℹ️  El usuario de prueba '" + testUserEmail + "' ya existía.");
+            System.out.println("El usuario de prueba '" + testUserEmail + "' ya existía.");
         }
     }
 }

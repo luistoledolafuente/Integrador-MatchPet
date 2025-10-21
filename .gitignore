@@ -10,3 +10,6 @@ Archivos de React/Node
 
 Logs de depuración (si existen)
 *.log
+
+# Ignora la base de datos local de backend-user
+/backend-user/db_data/

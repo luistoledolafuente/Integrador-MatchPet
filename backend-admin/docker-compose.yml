@@ -24,19 +24,15 @@ services:
   # 2. Backend Service (Django Admin)
   backend_admin:
     build:
-      # ¡IMPORTANTE! El contexto ahora es el directorio actual (donde está el Dockerfile)
       context: .
       dockerfile: Dockerfile
     container_name: integrador_matchpet-backend_admin-1
-    # Espera que la DB esté saludable antes de iniciar la migración y el servidor
     command: >
       sh -c "python manage.py migrate &&
              python manage.py runserver 0.0.0.0:8000"
     volumes:
-      # ¡CORREGIDO! Monta el directorio de código actual en el contenedor
       - .:/usr/src/app
     ports:
-      # Acceso al servidor Django
       - "8000:8000"
     depends_on:
       db:

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // La URL base de tu API de backend.
 // Apunta al servicio que está corriendo (sea en local o en Docker).
-const API_URL = 'http://localhost:8080/api/auth';
+const API_URL = 'http://localhost:8081/api/auth';
 
 /**
  * Función para iniciar sesión.

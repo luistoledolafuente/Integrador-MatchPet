@@ -84,7 +84,6 @@ DATABASES = {
         'NAME': os.environ.get('DJANGO_DB_NAME', 'matchpet_db'), 
         'USER': os.environ.get('DJANGO_DB_USER', 'root'),
         'PASSWORD': os.environ.get('DJANGO_DB_PASSWORD', ''),
-        # ¡CRUCIAL! Debe usar 'db', el nombre del servicio de la DB en Docker Compose.
         'HOST': os.environ.get('DJANGO_DB_HOST', 'localhost'), 
         'PORT': os.environ.get('DJANGO_DB_PORT', '3306'),
         'OPTIONS': {
@@ -149,7 +148,6 @@ SPECTACULAR_SETTINGS = {
     'TITLE': 'MatchPet API - Administración',
     'DESCRIPTION': 'Documentación de la API REST para el panel de administración de MatchPet.',
     'VERSION': '1.0.0',
-    # Para JWT, puedes configurar el esquema de seguridad:
     'SECURITY': [
         {
             'BearerAuth': {
@@ -159,16 +157,15 @@ SPECTACULAR_SETTINGS = {
             }
         }
     ],
-    # Si quieres que solo se muestren ciertos endpoints (opcional)
     'SERVE_INCLUDE_SCHEMA': False, 
 }
 
 # Configuración de Django Rest Framework
 REST_FRAMEWORK = {
-    # 🚨 Faltaba esta línea para resolver el error 500
+
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema', 
     
-    # También añade la autenticación JWT
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
