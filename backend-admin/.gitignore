@@ -1,0 +1,29 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.$py.class
+
+# Entorno Virtual
+venv/
+env/
+.venv/
+
+# Base de Datos
+*.sqlite3
+
+# Django / Media
+/media
+/static
+
+# Archivos de configuración y claves sensibles
+*.env
+.vscode/
+.idea/
+*.log
+db.sqlite3
+
+
+# Tokens de autenticación y otros archivos temporales
+jwt_secret
