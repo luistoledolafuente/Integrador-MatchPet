@@ -1,114 +1,84 @@
-<<<<<<< HEAD
-# 🐾 MatchPet - Plataforma de Adopción de Mascotas
+# Backend de Usuarios - MatchPet 🐾
 
-Este proyecto gestiona la adopción de mascotas con una arquitectura **Backend Híbrida**.
+Este es el servicio de backend para la autenticación y gestión de usuarios del proyecto MatchPet. Implementa un sistema de autenticación JWT (Tokens) "sin estado" (stateless).
 
----
+## Historias de Usuario Completadas
 
-## ⚙️ Arquitectura del Proyecto
-
-| Módulo | Tecnología | Propósito |
-|--------|-------------|-----------|
-| **backend-admin/** | Django / DRF | Gestión de refugios, animales y especies |
-| **frontend-web/** | Por definir | Panel de administración |
-| **frontend-movil/** | Por definir | Interfaz para adoptantes |
+* ✔️ **HU-01:** Registro con correo y contraseña.
+* ✔️ **HU-02:** Inicio de sesión con correo y contraseña.
+* ✔️ **HU-03:** Inicio de sesión y registro automático con Google (OAuth2).
 
 ---
 
-## 🚀 Backend (backend-admin)
+## 🚀 Cómo Empezar (Setup Local)
 
-Desarrollado con **Django REST Framework**, encargado de la lógica y administración del sistema.
+Sigue estos 4 pasos para correr el proyecto en tu máquina local.
 
-### 🔑 Autenticación (Sprint 1)
+### 1. Prerrequisitos
+* Java 17 (o superior)
+* Apache Maven
+* MySQL 8 (o un servidor de MySQL)
 
-Se implementó login con **JWT** para Refugios/Administradores.
+### 2. Base de Datos
+1.  Abre tu gestor de MySQL (Workbench, DBeaver, etc.).
+2.  Crea una nueva base de datos (schema) llamada: `db_matchpet`
+3.  Ejecuta el script SQL (`database.sql` o similar) para crear las tablas (`Usuarios`, `Roles`, `Usuario_Roles`).
+4.  **¡Crítico!** Asegúrate de insertar los roles base:
+    ```sql
+    INSERT INTO Roles (nombre_rol) VALUES ('Adoptante');
+    ```
 
-| Endpoint | Método | Descripción |
-|-----------|---------|--------------|
-| `/api/admin/login/` | POST | Devuelve tokens `access` y `refresh` |
+### 3. Configuración de Secretos (¡Importante!)
+Este proyecto usa un sistema de perfiles para manejar los secretos. La configuración compartida (Google, JWT) ya está en `application-dev.properties` (que está en Git).
+
+Tú **solo necesitas** configurar tu contraseña de base de datos local:
+
+1.  Ve a `src/main/resources/`.
+2.  Busca el archivo `application-local.properties.example` (es un molde).
+3.  **Crea una copia** de ese archivo en la misma carpeta.
+4.  Renombra la copia a: `application-local.properties` (Este archivo es ignorado por Git y es solo tuyo).
+5.  Abre el nuevo `application-local.properties` y pon tu contraseña de MySQL:
+    ```properties
+    spring.datasource.password=TU_PASSWORD_DE_MYSQL_AQUI
+    ```
+
+### 4. Correr la Aplicación
+1.  Abre el proyecto en tu IDE (IntelliJ, VSCode).
+2.  Espera a que Maven descargue las dependencias.
+3.  ¡Corre la clase `BackendUserApplication.java`!
+
+El servidor estará activo en `http://localhost:8080`.
 
 ---
 
-## 🛠️ Configuración con Docker
+## 📄 Documentación de la API (Swagger)
 
-### Requisitos
-- Docker Desktop / Engine  
-- Docker Compose  
+Una vez que la aplicación esté corriendo, puedes ver **toda la documentación interactiva** de la API aquí:
 
-### 1️⃣ Iniciar entorno
-```bash
-docker compose up --build -d
-```
+➡️ **[http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)**
 
-### 2️⃣ Crear superusuario
-``` bash
-docker compose exec backend_admin python manage.py createsuperuser
-```
-### 🌐 Acceso
-API Principal: http://127.0.0.1:8000/
+### ¿Cómo probar endpoints protegidos?
+1.  Usa `POST /api/auth/login` para obtener un token.
+2.  En la página de Swagger, haz clic en el botón verde **"Authorize"** 🔒.
+3.  Escribe `Bearer ` (con un espacio) seguido de tu token y haz clic en "Authorize".
+4.  ¡Ahora puedes probar todos los endpoints protegidos (como `GET /api/user/profile`)!
 
-Swagger UI: http://127.0.0.1:8000/api/schema/swagger-ui/
+---
 
-### 🛑 Detener entorno
-``` bash
-docker compose down
-``` 
-=======
-# MatchPet - Plataforma de Adopción de Mascotas
+## Endpoints Principales
 
-Este repositorio contiene el código fuente de los diferentes módulos del proyecto MatchPet, siguiendo una arquitectura de *Backend* Híbrido.
+Consulta `swagger-ui.html` para ver todos los detalles, DTOs y respuestas.
 
-## ⚙️ Arquitectura del Proyecto
+### Autenticación
+* `POST /api/auth/register`: Registro de nuevo usuario.
+* `POST /api/auth/login`: Login con correo y contraseña.
 
-| Módulo | Tecnología Principal | Propósito |
-| :--- | :--- | :--- |
-| **`backend-admin/`** | **Django / DRF** | Gestión de Refugios, Animales, Especies y Administración. |
-| **`frontend-web/`** | *Por definir* | Panel de administración y gestión de contenido. |
-| **`frontend-movil/`** | *Por definir* | Interfaz para Adoptantes (Usuarios). |
+### Login con Google (Flujo Especial)
+El login con Google no es un endpoint de API que se llama, es un **flujo de redirección**.
+1.  Tu frontend debe **redirigir** al usuario a la URL mágica de Spring Security.
+2.  Para saber cuál es esa URL, puedes consultar nuestro endpoint de documentación en Swagger: `GET /api/auth/google-login-url`.
+3.  La URL que debe usar el frontend es: `GET /oauth2/authorization/google`.
+4.  Después del éxito, el backend redirigirá al frontend a `(tu-url-frontend)/login-success?token=...` (Esto se configura en el backend).
 
-***
-
-## 🚀 Módulo Backend - Administración (`backend-admin/`)
-
-Este módulo está desarrollado con Django REST Framework y es responsable de la lógica de gestión de contenido y administración de la plataforma.
-
-### 🔑 Autenticación Implementada (Sprint-1)
-
-Se implementó el sistema de **Login para Refugios/Administradores** utilizando **JSON Web Tokens (JWT)**.
-
-| Endpoint | Método | Descripción |
-| :--- | :--- | :--- |
-| `/api/admin/login/` | `POST` | Autentica al Refugio y devuelve los tokens `access` y `refresh`. Requiere permisos `is_staff=True`. |
-
-### 🛠️ Configuración y Ejecución
-
-Para iniciar el servidor de desarrollo, sigue estos pasos:
-
-1.  **Muévete al directorio del Backend:**
-    ```bash
-    cd backend-admin
-    ```
-
-2.  **Activa el Entorno Virtual:**
-    ```bash
-    source venv/Scripts/activate
-    ```
-    *(Ajusta el comando de activación si es necesario)*
-
-3.  **Instala las Dependencias:**
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-4.  **Inicia el Servidor:**
-    ```bash
-    python manage.py runserver
-    ```
-    El API estará disponible en `http://127.0.0.1:8000/`.
-
-### 📚 Documentación de APIs
-
-La documentación interactiva (Swagger UI) para todos los *endpoints* está disponible en:
-
-👉 **[http://127.0.0.1:8000/api/schema/swagger-ui/](http://127.0.0.1:8000/api/schema/swagger-ui/)**
->>>>>>> Moya
+### Perfil (Protegido - Requiere Bearer Token)
+* `GET /api/user/profile`: Obtiene la información del usuario autenticado.

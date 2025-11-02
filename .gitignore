@@ -1,12 +1,42 @@
-db_data/*
-!db_data/init.sql
-!db_data/.gitkeep
+# ===================================================================
+# Archivo .gitignore recomendado para un proyecto Spring Boot + Maven
+# ===================================================================
 
-Archivos de React/Node
-/frontend-web-user/node_modules
-/frontend-web-user/dist
-/frontend-web-admin/node_modules
-/frontend-web-admin/dist
+# 1. Archivos de Secretos y Configuración Local
+# ¡IMPORTANTE! Ignora el archivo de propiedades para no subir contraseñas.
+application.properties
 
-Logs de depuración (si existen)
+# 2. Artefactos de Build y Compilación
+# Ignora la carpeta principal de compilación de Maven.
+target/
+# Ignora la carpeta de compilación de IntelliJ IDEA.
+out/
+# Ignora cualquier archivo .jar, .war, o .ear que pueda generarse.
+*.jar
+*.war
+*.ear
+
+# 3. Archivos de Log
+# Ignora todos los archivos de log que genere la aplicación.
 *.log
+logs/
+
+# 4. Archivos específicos del Sistema Operativo
+.DS_Store
+Thumbs.db
+
+# 5. Archivos del IDE (IntelliJ IDEA)
+# Mantenemos tu configuración, es perfecta.
+.idea/
+*.iws
+*.iml
+*.ipr
+
+# 6. Archivos del IDE (VS Code)
+.vscode/
+
+# 7. Archivos de Maven
+# Ignora el .jar del wrapper, pero no los scripts.
+.mvn/wrapper/maven-wrapper.jar
+
+# Elimina las reglas !**/src/.../target/ que eran confusas.
